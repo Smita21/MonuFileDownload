@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  downloadFile = () => {
+
+    fetch('http://localhost:5001?file=pdf')
+      .then(response => {
+        response.blob().then(blob => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement('a');
+          a.href = url;
+          a.download = 'file';
+          a.click();
+        });
+        //window.location.href = response.url;
+      });
+  }
+
+  render() {
+    return (
+      <div id="container">
+        <h1 className="text-success text-center">Download File using React App</h1>
+        <button className="btn btn-primary" onClick={this.downloadFile}>Download</button>
+      </div>
+    )
+  }
+
 }
 
-export default App;
+export default App; 
